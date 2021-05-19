@@ -16,7 +16,8 @@ import { Request, Response } from 'express'; // 表示http请求，具有request
 import { CreateCatDto, QueryReq, ParamsReq } from './dto/cats.dto';
 import { CatsService } from './cats.service';
 import { Cat } from './interface/cat.interface';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('猫属')
 @Controller('cats')
 export class CatsController {
   constructor(private cateService: CatsService) {} //CatsService 是通过类构造函数注入的
