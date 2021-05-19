@@ -13,10 +13,13 @@ import {
   Body,
 } from '@nestjs/common';
 import { Request, Response } from 'express'; // 表示http请求，具有request查询字符串，参数，http标头和正文属性
-import { CreateCatDto, QueryReq, ParamsReq } from './cats.dto';
+import { CreateCatDto, QueryReq, ParamsReq } from './dto/cats.dto';
+import { CatsService } from './cats.service';
+import { Cat } from './interface/cat.interface';
 
 @Controller('cats')
 export class CatsController {
+  constructor(private cateService: CatsService) {} //CatsService 是通过类构造函数注入的
   @Get() // Get请求 cats
   findAll(): string {
     return 'this action returns all cats!';
@@ -89,5 +92,15 @@ export class CatsController {
       { name: 'tom', age: 12, breed: 'iha' },
       { name: 'tom', age: 12, breed: 'iha' },
     ]);
+  }
+  @Post('resadd')
+  async serCreate(@Body() createCatDto: CreateCatDto) {
+    // ↑ 接口接收dto数据模型的参数  ↑
+    this.cateService.create(createCatDto);
+    // ↑ 复杂数据处理 serveice 来处理 创建新对象  ↑
+  }
+  @Get('resfind')
+  async serFindAll(): Promise<Cat[]> {
+    return this.cateService.findAll();
   }
 }
